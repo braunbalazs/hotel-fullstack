@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  db:
+    container_name: practice
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 12345
+      MYSQL_DATABASE: lakeside
+    ports:
+      - "5500:3306" # port binding
