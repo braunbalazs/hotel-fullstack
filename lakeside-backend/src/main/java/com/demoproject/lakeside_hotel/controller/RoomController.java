@@ -9,10 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rooms")
@@ -45,6 +48,21 @@ public class RoomController {
     public ResponseEntity<Void> deleteRoom(@PathVariable Long roomId) {
         roomService.deleteRoom(roomId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/update/{roomId}")
+    public ResponseEntity<RoomResponse> updateRoom(@PathVariable Long roomId,
+                                                   @RequestParam(required = false) String roomType,
+                                                   @RequestParam(required = false) BigDecimal roomPrice,
+                                                   @RequestParam(required = false) MultipartFile photo) throws SQLException, IOException {
+        RoomResponse roomResponse = roomService.updateRoom(roomId, roomType, roomPrice, photo);
+        return ResponseEntity.ok(roomResponse);
+    }
+
+    @GetMapping("/room/{roomId}")
+    public ResponseEntity<RoomResponse> getRoomById(@PathVariable Long roomId) {
+        RoomResponse roomResponse = roomService.getRoomById(roomId);
+        return ResponseEntity.ok(roomResponse);
     }
 }
 

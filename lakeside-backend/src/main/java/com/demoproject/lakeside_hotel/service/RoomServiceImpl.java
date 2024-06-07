@@ -1,5 +1,6 @@
 package com.demoproject.lakeside_hotel.service;
 
+import com.demoproject.lakeside_hotel.exception.InternalServerException;
 import com.demoproject.lakeside_hotel.exception.PhotoRetrievalException;
 import com.demoproject.lakeside_hotel.exception.ResourceNotFoundException;
 import com.demoproject.lakeside_hotel.model.BookedRoom;
@@ -65,7 +66,36 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void deleteRoom(Long roomId) {
-        roomRepository.findById(roomId).ifPresent(room -> roomRepository.deleteById(roomId));
+        roomRepository.findById(roomId)
+                      .ifPresent(room -> roomRepository.deleteById(roomId));
+    }
+
+    @Override
+    public RoomResponse updateRoom(Long roomId, String roomType, BigDecimal roomPrice, MultipartFile photo) throws IOException, SQLException {
+        byte[] photoBytes = photo != null && !photo.isEmpty()
+                ? photo.getBytes()
+                : getRoomPhotoByRoomId(roomId); // todo could be null here
+//        Blob photoBlob = photoBytes != null && photoBytes.length > 0 ? new SerialBlob(photoBytes) : null;
+        Room room = roomRepository.findById(roomId)
+                                  .orElseThrow(() -> new ResourceNotFoundException("Room not found"));
+        if(roomType != null) room.setRoomType(roomType);
+        if(roomPrice != null) room.setRoomPrice(roomPrice);
+        if(photoBytes != null && photoBytes.length > 0) {
+            try {
+                room.setPhoto(new SerialBlob(photoBytes));
+            }catch (SQLException e) {
+                throw new InternalServerException("Error updating room");
+            }
+        }
+        //todo @transactional instead of save
+        return getRoomResponse(roomRepository.save(room));
+    }
+
+    @Override
+    public RoomResponse getRoomById(Long roomId) {
+        Room room = roomRepository.findById(roomId)
+                                  .orElseThrow(() -> new ResourceNotFoundException("Room with id: %d not found".formatted(roomId)));
+        return getRoomResponse(room);
     }
 
     private byte[] getRoomPhotoByRoomId(Long roomId) throws SQLException {
@@ -75,6 +105,8 @@ public class RoomServiceImpl implements RoomService {
         if (photoBlob != null) {
             return photoBlob.getBytes(1, (int) photoBlob.length());
         }
+
+
         return null;
     }
 

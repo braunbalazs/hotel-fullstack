@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { addRoom } from "../utils/ApiFunctions";
 import RoomTypeSelector from "../common/RoomTypeSelector";
+import { Link } from "react-router-dom";
 
 const initialRoom = {
   photo: null,
@@ -61,24 +62,27 @@ const AddRoom = () => {
 
   return (
     <>
-      <section className="container, mt-5 mb-5">
+      <section className="container mt-5 mb-5">
         <div className="row justify-content-center">
           <div className="col-md-8 col-lg-6">
             <h2 className="mt-5 mb-2">Add a New Room</h2>
-
             {successMessage && (
               <div className="alert alert-success fade show">
+                {" "}
                 {successMessage}
               </div>
             )}
 
             {errorMessage && (
-              <div className="alert alert-danger fade show">{errorMessage}</div>
+              <div className="alert alert-danger fade show">
+                {" "}
+                {errorMessage}
+              </div>
             )}
 
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label className="form-label" htmlFor="roomType">
+                <label htmlFor="roomType" className="form-label">
                   Room Type
                 </label>
                 <div>
@@ -89,19 +93,20 @@ const AddRoom = () => {
                 </div>
               </div>
               <div className="mb-3">
-                <label className="form-label" htmlFor="roomPrice">
+                <label htmlFor="roomPrice" className="form-label">
                   Room Price
                 </label>
                 <input
-                  className="form-control"
-                  type="number"
                   required
+                  type="number"
+                  className="form-control"
                   id="roomPrice"
                   name="roomPrice"
                   value={newRoom.roomPrice}
                   onChange={handleRoomInputChange}
                 />
               </div>
+
               <div className="mb-3">
                 <label htmlFor="photo" className="form-label">
                   Room Photo
@@ -113,7 +118,6 @@ const AddRoom = () => {
                   type="file"
                   className="form-control"
                   onChange={handleImageChange}
-                  style={{ height: "auto", padding: 0 }}
                 />
                 {imagePreview && (
                   <img
@@ -125,7 +129,12 @@ const AddRoom = () => {
                 )}
               </div>
               <div className="d-grid gap-2 d-md-flex mt-2">
-                <button className="btn btn-outline-primary">Save Room</button>
+                <Link to={"/existing-rooms"} className="btn btn-outline-info">
+                  Existing rooms
+                </Link>
+                <button type="submit" className="btn btn-outline-primary ml-5">
+                  Save Room
+                </button>
               </div>
             </form>
           </div>
