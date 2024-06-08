@@ -1,10 +1,22 @@
 import React from "react";
+import MainHeader from "../layout/MainHeader";
+import HotelServices from "../common/HotelServices";
+import Parallax from "../common/Parallax";
+import RoomCaroussel from "../common/RoomCaroussel";
 
 const Home = () => {
   return (
-    <div>
-      <h2>Welcome to the home page</h2>
-    </div>
+    <section>
+      <MainHeader />
+      <div className="container">
+        <RoomCaroussel />
+        <Parallax />
+        <RoomCaroussel />
+        <HotelServices />
+        <Parallax />
+        <RoomCaroussel />
+      </div>
+    </section>
   );
 };
 

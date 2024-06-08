@@ -79,24 +79,23 @@ const ExistingRooms = () => {
 
   return (
     <>
+      <div className="container col-md-8 col-lg-6">
+        {successMessage && (
+          <p className="alert alert-success mt-5">{successMessage}</p>
+        )}
+
+        {errorMessage && (
+          <p className="alert alert-danger mt-5">{errorMessage}</p>
+        )}
+      </div>
       {isLoading ? (
         <p>Loading existing rooms</p>
       ) : (
         <>
-          <section className="mt-5 mb-5 containter">
+          <section className="mt-5 mb-5 container">
             <div className="d-flex justify-content-center mb-3 mt-5">
               <h2>Existing Rooms</h2>
             </div>
-            {successMessage && (
-              <div className="alert alert-success" role="alert">
-                {successMessage}
-              </div>
-            )}
-            {errorMessage && (
-              <div className="alert alert-danger" role="alert">
-                {errorMessage}
-              </div>
-            )}
             <Row>
               <Col md={6} className="mb-3 mb-md-0">
                 <RoomFilter data={rooms} setFilteredData={setFilteredRooms} />

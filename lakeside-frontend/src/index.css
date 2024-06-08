@@ -223,3 +223,9 @@ body {
   height: 60px;
   text-align: center;
 }
+
+/* @media (min-width: 1200px) {
+  .container {
+      width: 1200px;
+  }
+} */
