@@ -45,7 +45,9 @@ public class BookedRoom {
     private Room room;
 
     public void calculateTotalNumOfGuests() {
-        this.totalNumOfGuests = this.numOfAdults + this.numOfChildren;
+        this.totalNumOfGuests =
+                (this.numOfAdults != null ? this.numOfAdults : 0) +
+                        (this.numOfChildren != null ? this.numOfChildren : 0);
     }
 
     public void setNumOfAdults(Integer numOfAdults) {

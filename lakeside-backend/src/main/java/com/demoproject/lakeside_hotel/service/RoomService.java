@@ -21,5 +21,7 @@ public interface RoomService {
 
     RoomResponse updateRoom(Long roomId, String roomType, BigDecimal roomPrice, MultipartFile photo) throws IOException, SQLException;
 
-    RoomResponse getRoomById(Long roomId);
+    RoomResponse getRoomResponseById(Long roomId);
+
+    public Room getRoomById(Long roomId);
 }

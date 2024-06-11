@@ -26,7 +26,7 @@ import java.util.List;
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
-    private final BookingService bookingService;
+//    private final BookingService bookingService;
 
     @Override
     public RoomResponse addNewRoom(MultipartFile file, String roomType, BigDecimal roomPrice) throws SQLException, IOException {
@@ -78,12 +78,12 @@ public class RoomServiceImpl implements RoomService {
 //        Blob photoBlob = photoBytes != null && photoBytes.length > 0 ? new SerialBlob(photoBytes) : null;
         Room room = roomRepository.findById(roomId)
                                   .orElseThrow(() -> new ResourceNotFoundException("Room not found"));
-        if(roomType != null) room.setRoomType(roomType);
-        if(roomPrice != null) room.setRoomPrice(roomPrice);
-        if(photoBytes != null && photoBytes.length > 0) {
+        if (roomType != null) room.setRoomType(roomType);
+        if (roomPrice != null) room.setRoomPrice(roomPrice);
+        if (photoBytes != null && photoBytes.length > 0) {
             try {
                 room.setPhoto(new SerialBlob(photoBytes));
-            }catch (SQLException e) {
+            } catch (SQLException e) {
                 throw new InternalServerException("Error updating room");
             }
         }
@@ -92,10 +92,14 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomResponse getRoomById(Long roomId) {
-        Room room = roomRepository.findById(roomId)
-                                  .orElseThrow(() -> new ResourceNotFoundException("Room with id: %d not found".formatted(roomId)));
+    public RoomResponse getRoomResponseById(Long roomId) {
+        Room room = getRoomById(roomId);
         return getRoomResponse(room);
+    }
+
+    public Room getRoomById(Long roomId) {
+        return roomRepository.findById(roomId)
+                             .orElseThrow(() -> new ResourceNotFoundException("Room with id: %d not found".formatted(roomId)));
     }
 
     private byte[] getRoomPhotoByRoomId(Long roomId) throws SQLException {
@@ -111,7 +115,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     private RoomResponse getRoomResponse(Room room) {
-        List<BookedRoom> bookings = bookingService.getAllBookingsByRoomId(room.getId());
+//        List<BookedRoom> bookings = bookingService.getAllBookingsByRoomId(room.getId());
 //        List<BookingResponse> bookingInfo = bookings.stream()
 //                                                    .map(booking -> new BookingResponse(
 //                                                            booking.getId(),

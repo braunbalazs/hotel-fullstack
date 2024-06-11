@@ -64,3 +64,63 @@ export async function getRoomById(roomId) {
     throw new Error(`Error fetching room ${error.message}`);
   }
 }
+
+// Save new booking to db
+export async function bookRoom(roomId, booking) {
+  const bookingToSend = {
+    guestFullName: booking.guestFullName,
+    guestEmail: booking.guestEmail,
+    checkInDate: booking.checkInDate,
+    checkOutDate: booking.checkOutDate,
+    numOfAdults: parseInt(booking.numOfAdults),
+    numOfChildren: parseInt(booking.numOfChildren),
+  };
+  console.log(bookingToSend);
+  try {
+    const response = await api.post(
+      `/bookings/room/${roomId}/booking`,
+      bookingToSend
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data);
+    } else {
+      throw new Error(`Error booking room: ${error.message}`);
+    }
+  }
+}
+
+// Get all bookings from db
+export async function getAllBookings() {
+  try {
+    const result = await api.get("/bookings/all-bookings");
+    return result.data;
+  } catch (error) {
+    throw new Error(`Error fetching bookings: ${error.message}`);
+  }
+}
+
+// Get booking by the confirmation code
+export async function getBookingByConfirmationCode(confirmationCode) {
+  try {
+    const result = await api.get(`/bookings/confirmation/${confirmationCode}`);
+    return result.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data);
+    } else {
+      throw new Error(`Error finding booking: ${error.message}`);
+    }
+  }
+}
+
+// Cancel booking - delete in db
+export async function cancelBooking(bookingId) {
+  try {
+    const result = await api.delete(`/bookings/booking/${bookingId}/delete`);
+    return result.data;
+  } catch (error) {
+    throw new Error(`Error cancelling booking: ${error.message}`);
+  }
+}

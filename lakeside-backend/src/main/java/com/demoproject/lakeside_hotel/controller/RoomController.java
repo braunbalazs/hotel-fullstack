@@ -1,6 +1,5 @@
 package com.demoproject.lakeside_hotel.controller;
 
-import com.demoproject.lakeside_hotel.model.Room;
 import com.demoproject.lakeside_hotel.response.RoomResponse;
 import com.demoproject.lakeside_hotel.service.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -9,13 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/rooms")
@@ -61,7 +57,7 @@ public class RoomController {
 
     @GetMapping("/room/{roomId}")
     public ResponseEntity<RoomResponse> getRoomById(@PathVariable Long roomId) {
-        RoomResponse roomResponse = roomService.getRoomById(roomId);
+        RoomResponse roomResponse = roomService.getRoomResponseById(roomId);
         return ResponseEntity.ok(roomResponse);
     }
 }
