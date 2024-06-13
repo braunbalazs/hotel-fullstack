@@ -21,12 +21,6 @@ const BookingForm = () => {
     numOfChildren: "",
   });
 
-  const [roomInfo, setRoomInfo] = useState({
-    photo: "",
-    roomType: "",
-    roomPrice: "",
-  });
-
   const { roomId } = useParams();
   const navigate = useNavigate();
 

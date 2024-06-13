@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -50,18 +51,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<RoomResponse> getAllRooms() throws SQLException {
         List<Room> rooms = roomRepository.findAll();
-        List<RoomResponse> roomResponses = new ArrayList<>();
-        for (Room room : rooms) {
-            byte[] photoBytes = getRoomPhotoByRoomId(room.getId()); // Todo
-            if (photoBytes != null && photoBytes.length > 0) {
-                String base64Photo = Base64.getEncoder()
-                                           .encodeToString(photoBytes);
-                RoomResponse roomResponse = getRoomResponse(room);
-                roomResponse.setPhoto(base64Photo);
-                roomResponses.add(roomResponse);
-            }
-        }
-        return roomResponses;
+        return getRoomResponseList(rooms);
     }
 
     @Override
@@ -102,6 +92,27 @@ public class RoomServiceImpl implements RoomService {
                              .orElseThrow(() -> new ResourceNotFoundException("Room with id: %d not found".formatted(roomId)));
     }
 
+    @Override
+    public List<RoomResponse> getAvailableRooms(LocalDate checkInDate, LocalDate checkOutDate, String roomType) throws SQLException {
+        List<Room> availableRooms = roomRepository.findAvailableRoomsByDatesAndType(checkInDate, checkOutDate, roomType);
+        return getRoomResponseList(availableRooms);
+    }
+
+    private List<RoomResponse> getRoomResponseList(List<Room> rooms) throws SQLException {
+        List<RoomResponse> roomResponses = new ArrayList<>();
+        for (Room room : rooms) {
+            byte[] photoBytes = getRoomPhotoByRoomId(room.getId()); // Todo
+            if (photoBytes != null && photoBytes.length > 0) {
+                String base64Photo = Base64.getEncoder()
+                                           .encodeToString(photoBytes);
+                RoomResponse roomResponse = getRoomResponse(room);
+                roomResponse.setPhoto(base64Photo);
+                roomResponses.add(roomResponse);
+            }
+        }
+        return roomResponses;
+    }
+
     private byte[] getRoomPhotoByRoomId(Long roomId) throws SQLException {
         Room room = roomRepository.findById(roomId)
                                   .orElseThrow(() -> new ResourceNotFoundException("Room with id: %d not found".formatted(roomId)));
@@ -109,8 +120,6 @@ public class RoomServiceImpl implements RoomService {
         if (photoBlob != null) {
             return photoBlob.getBytes(1, (int) photoBlob.length());
         }
-
-
         return null;
     }
 

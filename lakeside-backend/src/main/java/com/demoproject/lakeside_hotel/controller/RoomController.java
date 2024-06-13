@@ -1,8 +1,10 @@
 package com.demoproject.lakeside_hotel.controller;
 
+import com.demoproject.lakeside_hotel.model.Room;
 import com.demoproject.lakeside_hotel.response.RoomResponse;
 import com.demoproject.lakeside_hotel.service.RoomService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -59,6 +62,20 @@ public class RoomController {
     public ResponseEntity<RoomResponse> getRoomById(@PathVariable Long roomId) {
         RoomResponse roomResponse = roomService.getRoomResponseById(roomId);
         return ResponseEntity.ok(roomResponse);
+    }
+
+    @GetMapping("/available-rooms")
+    public ResponseEntity<List<RoomResponse>> getAvailableRooms(
+            @RequestParam("checkInDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate,
+            @RequestParam("checkOutDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutDate,
+            @RequestParam("roomType") String roomType) throws SQLException {
+        List<RoomResponse> roomResponses = roomService.getAvailableRooms(checkInDate, checkOutDate, roomType);
+        if (roomResponses.isEmpty()) {
+            return ResponseEntity.noContent()
+                                 .build();
+        } else {
+            return ResponseEntity.ok(roomResponses);
+        }
     }
 }
 

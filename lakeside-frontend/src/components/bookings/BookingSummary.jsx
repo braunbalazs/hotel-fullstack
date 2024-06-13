@@ -33,7 +33,7 @@ const BookingSummary = ({ booking, payment, isFormValid, onConfirm }) => {
       <div className="card card-body mt-5">
         <h4 className="card-title hotel-color">Reservation Summary</h4>
         <p>
-          Name: <strong>{booking.guestName}</strong>
+          Name: <strong>{booking.guestFullName}</strong>
         </p>
         <p>
           Email: <strong>{booking.guestEmail}</strong>

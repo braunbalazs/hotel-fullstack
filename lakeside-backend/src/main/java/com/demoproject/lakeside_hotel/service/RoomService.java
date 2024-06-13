@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface RoomService {
@@ -24,4 +25,6 @@ public interface RoomService {
     RoomResponse getRoomResponseById(Long roomId);
 
     public Room getRoomById(Long roomId);
+
+    List<RoomResponse> getAvailableRooms(LocalDate checkInDate, LocalDate checkOutDate, String roomType) throws SQLException;
 }
