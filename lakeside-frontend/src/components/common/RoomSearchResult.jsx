@@ -6,7 +6,7 @@ import RoomPaginator from "./RoomPaginator";
 const RoomSearchResult = ({ results, onClearSearch }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const resultsPerPage = 3;
-  const totalResults = results.length();
+  const totalResults = results.length;
   const totalPages = Math.ceil(totalResults / resultsPerPage);
 
   function handlePageChange(pageNumber) {

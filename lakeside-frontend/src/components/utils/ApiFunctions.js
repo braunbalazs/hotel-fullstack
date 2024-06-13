@@ -125,6 +125,7 @@ export async function cancelBooking(bookingId) {
   }
 }
 
+// Get all available rooms from db with given dates and room type
 export async function getAvailableRooms(checkInDate, checkOutDate, roomType) {
   const result = await api.get(
     `/rooms/available-rooms?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&roomType=${roomType}`

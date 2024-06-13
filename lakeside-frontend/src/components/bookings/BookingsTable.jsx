@@ -38,6 +38,7 @@ const BookingsTable = ({ bookingInfo, handleBookingCancellation }) => {
             <th>S/N</th>
             <th>Booking ID</th>
             <th>Room Id</th>
+            <th>Room Type</th>
             <th>Chck-in Date</th>
             <th>Check-out Date</th>
             <th>Guest Name</th>
@@ -55,6 +56,7 @@ const BookingsTable = ({ bookingInfo, handleBookingCancellation }) => {
               <td>{index + 1}</td>
               <td>{booking.id}</td>
               <td>{booking.room.id}</td>
+              <td>{booking.room.roomType}</td>
               <td>{booking.checkInDate}</td>
               <td>{booking.checkOutDate}</td>
               <td>{booking.guestName}</td>
